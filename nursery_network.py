@@ -8,10 +8,6 @@ from activations import Tanh
 from losses import mse, mse_prime
 from network import train, predict
 
-# Import the library
-from tkinter import *
-from tkinter import filedialog
-
 list_of_inputs = [['usual', 'pretentious', 'great_pret'], 
                   ['proper', 'less_proper', 'improper', 'critical', 'very_crit'], 
                   ['complete', 'completed', 'incomplete', 'foster'], 
@@ -22,6 +18,11 @@ list_of_inputs = [['usual', 'pretentious', 'great_pret'],
                   ['recommended', 'priority', 'not_recom']]
 
 list_of_classes = ['not_recom', 'recommend', 'very_recom', 'priority', 'spec_prior']
+
+def printLog(*args, **kwargs):
+    print(*args, **kwargs)
+    with open('output.txt','a') as file:
+        print(*args, **kwargs, file=file)
 
 def make_np_arrays(x, y):
     x = [np.hstack([np.isin(sublist, subapp, assume_unique=True).astype(int) for sublist in list_of_inputs]) for subapp in x]
@@ -42,55 +43,48 @@ def test_data(x_test, y_test, data, network):
     # testing the training data
     for x, y, input in zip(x_test, y_test, data):
         output = predict(network, x)
-        print('input:', input, '\npred:', list_of_classes[np.argmax(output)], '\ntrue:', list_of_classes[np.argmax(y)])
+        printLog('input:', input, '\npred:', list_of_classes[np.argmax(output)], '\ntrue:', list_of_classes[np.argmax(y)])
         if(list_of_classes[np.argmax(output)] == list_of_classes[np.argmax(y)]):
             correct += 1
 
-    print(f"accuracy of training data: {correct}/{len(data)} - {round((correct / len(data)) * 100, 5)}%")
+    printLog(f"accuracy: {correct}/{len(data)} - {round((correct / len(data)) * 100, 5)}%")
 
-# Create an instance of window
-win=Tk()
+printLog("Nursery Application Decider\n")
+printLog("Hello, I have the ability to learn the patterns of deciding the outcomes of applications to this nursery.")
+printLog("Please help me train by providing me with a training file. Each line should have 8 entries, all comma separated.")
+fileName = input("Enter the path to a training file: ")
+printLog("You provided me with this file:", fileName)
 
-win.title("Nursery Application Decider")
-
-# Set the geometry of the window
-win.geometry("700x300")
-
-# Create a label
-Label(win, text="Click the button to open a dialog", font='Arial 16 bold').pack(pady=15)
-
-# Function to open a file in the system
-def open_file():
-   filepath = filedialog.askopenfilename(title="Give me a training data file:", filetypes=([("all files","*.*")]))
-   file = open(filepath,'r')
-   print(file.read())
-   file.close()
-
-# Create a button to trigger the dialog
-button = Button(win, text="Open", command=open_file)
-button.pack()
-
-win.mainloop()
-
-File = open('nursery-train.data','r') # What we know!
+File = open(fileName,'r') # What we know!
 nursery_applications = list(map(lambda x:x[:-1].rpartition(",")[0].split(','), File.readlines()))
 File.close()
 
-File = open('nursery-train.data','r') # take labels from this
+printLog(nursery_applications[0])
+
+File = open(fileName,'r') # take labels from this
 nursery_labels = list(map(lambda x: (x[:-1].rpartition(',')[-1]), File.readlines()))
 File.close()   
 
-File2 = open('nursery-test.data','r') # What we know!
+printLog("\nThanks! Please give me a testing file in the same format at the training file.")
+fileName = input("Enter the path to a testing file: ")
+printLog("You provided me with this file:", fileName)
+
+File2 = open(fileName,'r') # What we know!
 nursery_applications_test = list(map(lambda x:x[:-1].split(','), File2.readlines()))
 File2.close()
 
-File2 = open('nursery-test-labeled.data','r') # take labels from this
+printLog("\nThanks! Now, to test my accuracy, please give me a test file that is labeled.")
+fileName = input("Enter the path to a labeled testing file: ")
+printLog("You provided me with this file:", fileName)
+
+File2 = open(fileName,'r') # take labels from this
 nursery_labels_test = list(map(lambda x: (x[:-1].rpartition(',')[-1]), File2.readlines()))
 File2.close() 
 
+printLog("\nThanks! Give me a bit of time to train and give you my results...\n")
+
 applications_train, labels_train = make_np_arrays(nursery_applications, nursery_labels)
 applications_test, labels_test = make_np_arrays(nursery_applications_test, nursery_labels_test)
-
 
 # training data
 x_train, y_train = setup_data(applications_train, labels_train)
@@ -109,5 +103,10 @@ network = [
 # train
 train(network, mse, mse_prime, x_train, y_train, epochs=100, learning_rate=0.1, verbose=False)
 
+printLog("I just finished training! I am going to test myself on my training data.")
+
 test_data(x_train, y_train, nursery_applications, network)
+
+printLog("\nI just finished testing my training data! I will now give you your results.")
+
 test_data(x_test, y_test, nursery_applications_test, network)

@@ -49,28 +49,28 @@ def test_data(x_test, y_test, data, network):
     print(f"accuracy of training data: {correct}/{len(data)} - {round((correct / len(data)) * 100, 5)}%")
 
 # Create an instance of window
-# win=Tk()
+win=Tk()
 
-# win.title("Nursery Application Decider")
+win.title("Nursery Application Decider")
 
-# # Set the geometry of the window
-# win.geometry("700x300")
+# Set the geometry of the window
+win.geometry("700x300")
 
-# # Create a label
-# Label(win, text="Click the button to open a dialog", font='Arial 16 bold').pack(pady=15)
+# Create a label
+Label(win, text="Click the button to open a dialog", font='Arial 16 bold').pack(pady=15)
 
-# # Function to open a file in the system
-# def open_file():
-#    filepath = filedialog.askopenfilename(title="Give me a training data file:", filetypes=([("all files","*.*")]))
-#    file = open(filepath,'r')
-#    print(file.read())
-#    file.close()
+# Function to open a file in the system
+def open_file():
+   filepath = filedialog.askopenfilename(title="Give me a training data file:", filetypes=([("all files","*.*")]))
+   file = open(filepath,'r')
+   print(file.read())
+   file.close()
 
-# # Create a button to trigger the dialog
-# button = Button(win, text="Open", command=open_file)
-# button.pack()
+# Create a button to trigger the dialog
+button = Button(win, text="Open", command=open_file)
+button.pack()
 
-# win.mainloop()
+win.mainloop()
 
 File = open('nursery-train.data','r') # What we know!
 nursery_applications = list(map(lambda x:x[:-1].rpartition(",")[0].split(','), File.readlines()))

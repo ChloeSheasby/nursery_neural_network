@@ -26,30 +26,37 @@ def printLog(*args, **kwargs):
 
 def make_np_arrays(x, y):
     x = [np.hstack([np.isin(sublist, subapp, assume_unique=True).astype(int) for sublist in list_of_inputs]) for subapp in x]
-    y = [np.isin(list_of_classes, sublabel, assume_unique=True).astype(int) for sublabel in y]
+    if y:
+        y = [np.isin(list_of_classes, sublabel, assume_unique=True).astype(int) for sublabel in y]
     return x, y
 
 
 def setup_data(x, y):
     x = np.array(x)
-    y = np.array(y)
     x = x.reshape(x.shape[0], 27, 1)
-    y = y.reshape(y.shape[0], 5, 1)
+    if y:
+        y = np.array(y)
+        y = y.reshape(y.shape[0], 5, 1)
     return x, y
 
-def test_data(x_test, y_test, data, network):
+def test_data(x_test, y_test, data, network, mode):
     correct = 0
 
-    # testing the training data
-    for x, y, input in zip(x_test, y_test, data):
-        output = predict(network, x)
-        printLog('input:', input, '\npred:', list_of_classes[np.argmax(output)], '\ntrue:', list_of_classes[np.argmax(y)])
-        if(list_of_classes[np.argmax(output)] == list_of_classes[np.argmax(y)]):
-            correct += 1
+    if(not skip or mode == "training"):
+        for x, y, input in zip(x_test, y_test, data):
+            output = predict(network, x)
+            printLog('input:', input, '\npred:', list_of_classes[np.argmax(output)], '\ntrue:', list_of_classes[np.argmax(y)])
+            if(list_of_classes[np.argmax(output)] == list_of_classes[np.argmax(y)]):
+                correct += 1
+                
+        printLog(f"accuracy of {mode} data: {correct}/{len(data)} - {round((correct / len(data)) * 100, 5)}%")
+    else:
+        for x, input in zip(x_test, data):
+            output = predict(network, x)
+            printLog('input:', input, '\npred:', list_of_classes[np.argmax(output)])
 
-    printLog(f"accuracy: {correct}/{len(data)} - {round((correct / len(data)) * 100, 5)}%")
 
-printLog("Nursery Application Decider\n")
+printLog("Nursery Application Neural Network\n")
 printLog("Hello, I have the ability to learn the patterns of deciding the outcomes of applications to this nursery.")
 printLog("Please help me train by providing me with a training file. Each line should have 8 entries, all comma separated.")
 fileName = input("Enter the path to a training file: ")
@@ -58,8 +65,6 @@ printLog("You provided me with this file:", fileName)
 File = open(fileName,'r') # What we know!
 nursery_applications = list(map(lambda x:x[:-1].rpartition(",")[0].split(','), File.readlines()))
 File.close()
-
-printLog(nursery_applications[0])
 
 File = open(fileName,'r') # take labels from this
 nursery_labels = list(map(lambda x: (x[:-1].rpartition(',')[-1]), File.readlines()))
@@ -73,15 +78,19 @@ File2 = open(fileName,'r') # What we know!
 nursery_applications_test = list(map(lambda x:x[:-1].split(','), File2.readlines()))
 File2.close()
 
-printLog("\nThanks! Now, to test my accuracy, please give me a test file that is labeled.")
-fileName = input("Enter the path to a labeled testing file: ")
-printLog("You provided me with this file:", fileName)
+printLog("\nThanks! Now, if you would like to test my accuracy, please give me a test file that is labeled. If not, enter skip.")
+fileName = input("Enter the path to a labeled testing file or 'skip': ")
+skip = False
+if(fileName.upper() == 'SKIP'):
+    skip = True
+    nursery_labels_test = []
+else:
+    printLog("You provided me with this file:", fileName)
+    File2 = open(fileName,'r') # take labels from this
+    nursery_labels_test = list(map(lambda x: (x[:-1].rpartition(',')[-1]), File2.readlines()))
+    File2.close() 
 
-File2 = open(fileName,'r') # take labels from this
-nursery_labels_test = list(map(lambda x: (x[:-1].rpartition(',')[-1]), File2.readlines()))
-File2.close() 
-
-printLog("\nThanks! Give me a bit of time to train and give you my results...\n")
+printLog("\nGive me a bit of time to train and give you my results...\n")
 
 applications_train, labels_train = make_np_arrays(nursery_applications, nursery_labels)
 applications_test, labels_test = make_np_arrays(nursery_applications_test, nursery_labels_test)
@@ -105,8 +114,8 @@ train(network, mse, mse_prime, x_train, y_train, epochs=100, learning_rate=0.1, 
 
 printLog("I just finished training! I am going to test myself on my training data.")
 
-test_data(x_train, y_train, nursery_applications, network)
+test_data(x_train, y_train, nursery_applications, network, "training")
 
 printLog("\nI just finished testing my training data! I will now give you your results.")
 
-test_data(x_test, y_test, nursery_applications_test, network)
+test_data(x_test, y_test, nursery_applications_test, network, "testing")

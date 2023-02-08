@@ -7,7 +7,7 @@ Use the following command to run the program:
 ```
 python3 nursery_network.py
 ```
-### Sources
+#### Sources
 - [The Independent Code's Neural Network Video Playlist](https://www.youtube.com/playlist?list=PLQ4osgQ7WN6PGnvt6tzLAVAEMsL3LBqpm)
 - [The Independent Code's Neural Network GitHub](https://github.com/TheIndependentCode/Neural-Network)
 - [3Blue1Brown's Neural Network Video Playlist](https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi)

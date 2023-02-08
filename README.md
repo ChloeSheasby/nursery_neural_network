@@ -9,22 +9,22 @@ python3 nursery_network.py
 ```
 
 ## Description of the Nursery Database
-**1. Title: Nursery Database**
+1. **Title: Nursery Database**
 
-**2. Sources:**
+2. **Sources:**
     1. Creator: Vladislav Rajkovic et al. (13 experts)
     2. Donors: 
         1. Marko Bohanec   (marko.bohanec@ijs.si)
         2. Blaz Zupan      (blaz.zupan@ijs.si)
     3. Date: June, 1997
 
-**3. Past Usage:**
+3. **Past Usage:**
 
 The hierarchical decision model, from which this dataset is derived, was first presented in M. Olave, V. Rajkovic, M. Bohanec: An application for     admission in public school systems. In (I. Th. M. Snellen and W. B. H. J. van de Donk and J.-P. Baquiast, editors) Expert Systems in Public     Administration, pages 145-160. Elsevier Science Publishers (North Holland)}, 1989.
 
 Within machine-learning, this dataset was used for the evaluation of HINT (Hierarchy INduction Tool), which was proved to be able to completely reconstruct the original hierarchical model. This, together with a comparison with C4.5, is presented in B. Zupan, M. Bohanec, I. Bratko, J. Demsar: Machine learning by function decomposition. ICML-97, Nashville, TN. 1997 (to appear)
 
-**4. Relevant Information Paragraph:**
+4. **Relevant Information Paragraph:**
 
 Nursery Database was derived from a hierarchical decision model originally developed to rank applications for nursery schools. It was used during several years in 1980's when there was excessive enrollment to these schools in Ljubljana, Slovenia, and the rejected applications frequently needed an objective explanation. The final decision depended on three subproblems: occupation of parents and child's nursery, family structure and financial standing, and social and health picture of the family. The model was developed within expert system shell for decision making DEX (M. Bohanec, V. Rajkovic: Expert system for decision making. Sistemica 1(1), pp. 145-157, 1990.).
 
@@ -52,12 +52,12 @@ The Nursery Database contains examples with the structural information removed, 
 
 Because of known underlying concept structure, this database may be particularly useful for testing constructive induction and structure discovery methods.
 
-**5. Number of Instances: 12960**
+5. **Number of Instances: 12960**
    (instances completely cover the attribute space)
 
-**6. Number of Attributes: 8**
+6. **Number of Attributes: 8**
 
-**7. Attribute Values:**
+7. **Attribute Values:**
 
 ```
     parents        usual, pretentious, great_pret
@@ -70,9 +70,9 @@ Because of known underlying concept structure, this database may be particularly
     health         recommended, priority, not_recom
 ```
 
-**8. Missing Attribute Values: none**
+8. **Missing Attribute Values: none**
 
-**9. Class Distribution** (number of instances per class)
+9. **Class Distribution** (number of instances per class)
 
 ```
     class        N         N[%]

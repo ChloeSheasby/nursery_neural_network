@@ -13,6 +13,7 @@ python3 nursery_network.py
 - [3Blue1Brown's Neural Network Video Playlist](https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi)
 - [Michael Nielsen's *Neural Networks and Deep Learning*](http://neuralnetworksanddeeplearning.com/)
 
+
 ## Description of the Nursery Database
 1. **Title: Nursery Database**
 
